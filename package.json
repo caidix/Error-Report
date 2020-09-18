@@ -1,0 +1,21 @@
+{
+  "name": "cd-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "error-monitor",
+    "vue-error",
+    "js-error",
+    "ajax-error"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  }
+}
