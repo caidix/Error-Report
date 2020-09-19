@@ -14,6 +14,7 @@ export class Monitor {
   private resourceError: Boolean;
   private ajaxError: Boolean;
   private vueError: Boolean;
+  // private reportType: string;
   public constructor(params: any) {
     this.jsError = true;
     this.promiseError = true;
@@ -27,6 +28,7 @@ export class Monitor {
     this.ajaxError = options.ajaxError || this.ajaxError;
     this.resourceError = options.resourceError || this.resourceError;
     this.vueError = options.vueError || this.vueError;
+    // this.reportType = "";
     this.jsError && new JsError(options).handleError();
     this.resourceError && new ResourceError(options).handleError();
     this.vueError &&
