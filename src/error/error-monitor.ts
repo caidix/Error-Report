@@ -12,7 +12,7 @@ class ErrorMonitor {
   public msg: string | Event; // 错误信息
   public reportUrl: string; // 上报地址
   public extendsMsg?: any; // 上报额外信息
-  public reportType?: string; // 上报方式，get请求，图片上报
+  public method?: string; // 上报方式，get请求，图片上报
   constructor(options: errorOptionTypes) {
     this.errorType = ErrorEnums.UNKNOW_ERROR; //错误类型
     this.errorAlert = AlertEnums.INFO; //错误等级
@@ -23,13 +23,17 @@ class ErrorMonitor {
     this.errorStack = ''; //错误堆栈
     this.reportUrl = options.reportUrl;
     this.extendsMsg = options.extendsMsg || {};
+    this.method = options.method || 'post';
   }
   handleReportError() {
     try {
       const errorInfo = this.handleErrorInfo();
       ReportBus.on(() => {
-        console.log(this.reportUrl, errorInfo)
-        ReportBus.imageReport(this.reportUrl, errorInfo);
+        if (this.method === 'img') {
+          ReportBus.imageReport(this.reportUrl, errorInfo);
+        } else {
+          ReportBus.ajaxReport(this.reportUrl, errorInfo);
+        }
       })
       setTimeout(() => {
         !ReportBus.isEmit && ReportBus.emit();
