@@ -15,10 +15,9 @@ class JsError extends ErrorMonitor {
      * @param colno 发生错误的列号（数字）
      * @param error Error对象（对象）
      */
-    console.log('开始进行js监听')
     window.onerror = (message, source, lineno, colno, error) => {
       try {
-        console.log('监听到js报错')
+        console.log('js报错:\n', error);
         this.errorType = ErrorEnums.JS_ERROR; //错误类型
         this.errorAlert = AlertEnums.WARN; //错误等级
         this.msg = message; //错误信息

@@ -26,6 +26,7 @@ class AjaxError extends ErrorMonitor {
        */
       const target: any = e.target;
       if (target && target.status !== 200) {
+        console.log('ajax报错:\n', e);
         this.errorType = ErrorEnums.AJAX_ERROR; //错误类型
         this.errorAlert = AlertEnums.WARN; //错误等级
         this.msg = target.response;

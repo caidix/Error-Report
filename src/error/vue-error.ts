@@ -42,6 +42,7 @@ class VueError extends ErrorMonitor {
           stack: err.stack,
           info: info,
         };
+        console.log('vue报错:\n', err);
         if (Object.prototype.toString.call(vm) === '[object Object]') {
           data.componentName = this.formatComponentName(vm);
           data.propsData = vm.$options.propsData;

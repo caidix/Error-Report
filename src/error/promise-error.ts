@@ -11,6 +11,7 @@ class PromiseError extends ErrorMonitor {
         if (!e || !e.reason) {
           return;
         }
+        console.log('promise报错:\n', e);
         e.preventDefault()
         if (e.reason.config && e.reason.config.url) {
           this.url = e.reason.config.url;

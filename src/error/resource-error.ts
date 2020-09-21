@@ -33,6 +33,7 @@ class ResourceError extends ErrorMonitor {
           target instanceof HTMLLinkElement ||
           target instanceof HTMLImageElement
         )) { return; }
+        console.log('resouce报错:\n', e);
         this.errorType = ErrorEnums.RESOURCE_ERROR;
         this.errorAlert = AlertEnums.ERROR;
         if (target instanceof HTMLLinkElement) {
