@@ -1,13 +1,14 @@
 {
-  "name": "cd-monitor",
-  "version": "1.0.0",
-  "description": "",
+  "name": "cd-error-report",
+  "version": "0.0.1",
+  "description": "项目错误异常上报",
   "main": "src/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dist": "webpack webpack.config.js"
   },
   "keywords": [
-    "error-monitor",
+    "error-report",
     "vue-error",
     "js-error",
     "ajax-error"
@@ -17,5 +18,18 @@
   "devDependencies": {
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-node-resolve": "^5.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caidix/Error-Report.git"
+  },
+  "bugs": {
+    "url": "https://github.com/caidix/Error-Report/issues"
+  },
+  "homepage": "https://github.com/caidix/Error-Report#readme",
+  "dependencies": {
+    "ts-loader": "^8.0.4",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   }
 }
