@@ -23,7 +23,7 @@ class ErrorMonitor {
     this.errorStack = ''; //错误堆栈
     this.reportUrl = options.reportUrl;
     this.extendsMsg = options.extendsMsg || {};
-    this.method = options.method || 'post';
+    this.method = options.method || 'POST';
   }
   handleReportError() {
     try {

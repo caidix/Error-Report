@@ -3,7 +3,7 @@ export type errorOptionTypes = {
   reportUrl: string;
   extendsMsg?: any;
   vue?: any;
-}
+};
 
 export type errorMessageInterface = errorOptionTypes & {
   // url: string;
@@ -16,14 +16,13 @@ export type errorMessageInterface = errorOptionTypes & {
   resourceError?: Boolean;
   ajaxError?: Boolean;
   vueError?: Boolean;
-}
+};
 export interface keyValueProp {
   key: any;
   value: string;
 }
 
-export type enumsType = Array<string>
-
+export type enumsType = Array<string>;
 
 type stringArr = string[] | string;
 export interface navigatorFuncProps {
@@ -53,3 +52,14 @@ export interface navigatorFuncProps {
    */
   getScreenDirection(): string;
 }
+
+/**
+ * TODO： 页面性能type
+ */
+export type performanceTypes = {
+  report?: boolean;
+  reportUrl?: string;
+  resource?: boolean;
+  method?: string;
+  timeout?: number;
+};

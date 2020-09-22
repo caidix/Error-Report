@@ -1,4 +1,4 @@
-import ErrorMonitor from "../error/error-monitor";
+import ErrorMonitor from "./error-monitor";
 import { ErrorEnums, AlertEnums } from "../enums/error-enums";
 import { errorOptionTypes } from "../types/index";
 /**

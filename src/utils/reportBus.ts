@@ -40,13 +40,23 @@ export class EventBus implements EventBusProps {
   public clear(): void {
     this.events = [];
   }
-  public ajaxReport(url: string, data: any) {
+  public ajaxReport(url: string, data: any, method = "POST") {
     try {
       const dataStr = JSON.stringify(data);
-      const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-      xhr.open("POST", url, true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(dataStr);
+      const xhr = window.XMLHttpRequest
+        ? new XMLHttpRequest()
+        : new ActiveXObject("Microsoft.XMLHTTP");
+      if (method === "POST") {
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.open(method, url, true);
+        xhr.send(dataStr);
+      } else if (method === "GET") {
+        xhr.open("GET", url + "?" + dataStr, true);
+        xhr.send();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +64,7 @@ export class EventBus implements EventBusProps {
   public imageReport(url: string, data: any) {
     try {
       var img = new Image();
-      img.src = url + '?error=' + this.formatParams(data);
+      img.src = url + "?error=" + this.formatParams(data);
     } catch (error) {
       console.log(error);
     }

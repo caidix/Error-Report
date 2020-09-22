@@ -25,7 +25,7 @@ init 函数参数:
 | resourceError        |          是否上报 资源引入 报错           |   true |      false |
 | vueError             | 是否上报 vueError 报错，需要引入 vue 实例 |   true |      false |
 | vue                  |           使用 vueError 时使用            |   true |      false |
-| method |       上报方式：支持 IMG/POST 上报        | 'post' | 'img/post' |
+| method |       上报方式：支持 IMG/POST 上报        | 'POST' | 'img/POST' |
 
 ---
 
@@ -108,7 +108,7 @@ const router = express.Router();
 const sourceMap = require('source-map');
 const path = require('path');
 const resolve = file => path.resolve(__dirname, file);
-// 定义post接口
+// 定义POST接口
 router.get('/error/', async function(req, res) {
     // 获取前端传过来的报错对象
     let error = JSON.parse(req.query.error);

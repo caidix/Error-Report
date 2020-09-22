@@ -1,5 +1,4 @@
 import { errorMessageInterface } from "./types/index";
-import BrowserInfo from "./browser/index";
 import {
   JsError,
   ResourceError,
@@ -8,7 +7,7 @@ import {
   AjaxError,
 } from "./error/index";
 
-export class Monitor {
+export class ErrorMonitor {
   private jsError: Boolean;
   private promiseError: Boolean;
   private resourceError: Boolean;
