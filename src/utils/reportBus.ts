@@ -41,24 +41,36 @@ export class EventBus implements EventBusProps {
     this.events = [];
   }
   public ajaxReport(url: string, data: any, method = "POST") {
-    try {
+    return new Promise((resolve, reject) => {
       const dataStr = JSON.stringify(data);
       const xhr = window.XMLHttpRequest
         ? new XMLHttpRequest()
         : new ActiveXObject("Microsoft.XMLHTTP");
       if (method === "POST") {
+        xhr.open(method, url, true);
         xhr.setRequestHeader(
           "Content-Type",
           "application/x-www-form-urlencoded"
         );
-        xhr.open(method, url, true);
         xhr.send(dataStr);
       } else if (method === "GET") {
         xhr.open("GET", url + "?" + dataStr, true);
         xhr.send();
       }
-    } catch (error) {
-      console.log(error);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          resolve(xhr.responseText);
+        } else {
+          reject(new Error(xhr.statusText));
+        }
+      }
+    })
+  }
+  public beaconReport(url: string, data: any) {
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(url, data);
+    } else {
+      this.imageReport(url, data);
     }
   }
   public imageReport(url: string, data: any) {

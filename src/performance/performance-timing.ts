@@ -1,16 +1,16 @@
 import Performance from "./performance";
 import { ReportBus } from "../utils/reportBus";
-import { TIMEOUT } from "../utils/index";
-
+import { TIMEOUT, randomColor } from "../utils/index";
+import { performanceTypes } from "../types/index";
 type timingTypes = {
   [timingType: string]: number | unknown;
 };
 type resourceListTypes = {
-  js?: number;
-  css?: number;
-  img?: number;
-  timeOrigin?: PerformanceEntry;
-  timeout?: any;
+  js: number;
+  css: number;
+  img: number;
+  timeOrigin: PerformanceEntry;
+  timeout: any;
 };
 type reportOptionTypes = {
   timing?: timingTypes;
@@ -18,7 +18,7 @@ type reportOptionTypes = {
   other?: any;
 };
 type resourceTypes = { name: string; startTime: number; responseEnd: number };
-const getPageLoadTiming = (options: any) =>
+const getPageLoadTiming = (options: performanceTypes) =>
   new Promise((resolve, reject) => {
     if (Performance.isPerformance) {
       console.log("当前浏览器不兼容，最好切换至谷歌浏览器调试");
@@ -40,7 +40,6 @@ const getPageLoadTiming = (options: any) =>
      * 页面加载完成时间:这几乎代表了用户等待页面可用的时间
      * onload事件时间:执行 onload 回调函数的时间 -- onload执行时间过长 -- 是否onload操作过多
      */
-
     const timingData: timingTypes = {};
     timingData["白屏时间"] =
       (timing.responseStart - timing.navigationStart) / 1000;
@@ -69,13 +68,6 @@ const getPageLoadTiming = (options: any) =>
       (timing.loadEventEnd - timing.navigationStart) / 1000;
     timingData["onload事件时间"] = loadTime;
     reportOptions.timing = timingData;
-    // 将所有数据移至基准点时间
-    // const timeOrigin = Performance.getTimeOrigin();
-    // for (const key in timing) {
-    //   if (Object.prototype.hasOwnProperty.call(timing, key)) {
-    //     timing[key] = timing[key] > 0 ? timing[key] - timeOrigin : timing[key];
-    //   }
-    // }
     if (options.resource) {
       // 获取页面加载资源数据
       const resource = Performance.getEntriesByType("resource");
@@ -90,11 +82,11 @@ const getPageLoadTiming = (options: any) =>
         const { startTime, responseEnd } = item;
         const timeout = options.timeout || TIMEOUT;
         if (/.js$/.test(item.name.toLowerCase())) {
-          resourceList.js && resourceList.js++;
+          resourceList.js++;
         } else if (/.gif|.jpe?g|.png$/.test(item.name.toLowerCase())) {
-          resourceList.img && resourceList.img++;
+          resourceList.img++;
         } else if (/.css$/.test(item.name.toLowerCase())) {
-          resourceList.css && resourceList.css++;
+          resourceList.css++;
         }
         if (responseEnd - startTime > timeout) {
           resourceList.timeout.push({
@@ -105,16 +97,57 @@ const getPageLoadTiming = (options: any) =>
       });
       reportOptions.resource = resourceList;
       reportOptions.other = {
-        title: document.title,
+        url: window.location.href,
+        title: document.title
       };
     }
-    console.log(reportOptions);
-    // ReportBus.ajaxReport(options.url, reportOptions);
+
+    log(reportOptions);
+    if (!options.url) {
+      console.info("如需上报，上报地址为必填!");
+      return;
+    }
+    ReportBus.ajaxReport(options.url, reportOptions, options.method || 'POST').then((res) => {
+      console.log('ok');
+      resolve({
+        reportOptions,
+        res
+      })
+    }).catch((e) => reject(e));
   });
 
-/**
- * options 参数
- * 1. resource: true 携带页面资源超时等信息
- * 2. timeout: 不设置resource这个参数没必要 默认500
- */
 export default getPageLoadTiming;
+
+function log({ timing, resource }: any) {
+  console.log(`%c -------------timing性能检测---------------`, `color:${randomColor()}`);
+
+  for (let key in timing) {
+    console.log(`%c ${key} : `, `color:${randomColor()}`, `${timing[key]}秒`);
+  }
+  if (resource) {
+    console.log('%c ----------------resource------------------', `color:${randomColor()}`);
+    for (let key in resource) {
+      console.log(`%c ${key} : `, `color:${randomColor()}`, `${resource[key]}`);
+    }
+  }
+  console.log('%c ------------------------------------------', `color:${randomColor()}`);
+}
+
+
+// 将所有数据移至基准点时间
+// const timeOrigin = Performance.getTimeOrigin();
+// for (const key in timing) {
+//   if (Object.prototype.hasOwnProperty.call(timing, key)) {
+//     timing[key] = timing[key] > 0 ? timing[key] - timeOrigin : timing[key];
+//   }
+// }
+
+// 存储页面数据 -- 可以此绘制图表
+// function reportPerformanceByStore(op: any) {
+//   const storeKey = 'PF_' + window.location.pathname;
+//   const storage = window.localStorage;
+//   const oldPerformanceList = (storage[storeKey] && JSON.parse(storage[storeKey])) || [];
+//   oldPerformanceList.push(JSON.parse(op));
+//   const newPerformanceList = oldPerformanceList.slice(-10);
+//   storage[storeKey] = JSON.stringify(newPerformanceList);
+// }

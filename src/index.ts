@@ -1,2 +1,2 @@
-export { ErrorMonitor } from "./monitor";
-export { PerformanceMonitor } from "./performance/performance-monitor";
+export { ErrorMonitor } from "./error-monitor";
+export { PerformanceMonitor } from "./performance-monitor";

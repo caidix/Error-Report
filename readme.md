@@ -1,12 +1,19 @@
-# :tada: 异常数据上报
+# :tada: 异常/性能监控工具
 
-:clown_face:有借鉴各大开源 git 库
+:clown_face:有借鉴各大开源 git 库, 目前仅自己使用，没有放到npm库占用资源。需要自己打包。
 
+# :bookmark:目录
+1.   [异常监控](#jump)
+2.   [性能监控](#jump2)
+
+--- 
+
+# <span id="jump">异常监控</span>
 ## :bookmark:使用
 
 ```
-import { Monitor } from "../CD-Monitor/src/index";
-new Monitor().init({
+import { ErrorMonitor } from "../dist/index";
+new ErrorMonitor().init({
   reportUrl: "http://localhost:3000",
   vueError: true,
   vue: Vue,
@@ -16,16 +23,16 @@ new Monitor().init({
 ---
 
 init 函数参数:
-| 参数名               |                   功能                    | 默认值 |   是否必填 |
-|----------------------|:-----------------------------------------:|-------:|-----------:|
-| reportUrl            |              发送上报的地址               |        |       true |
-| jsError              |             是否上报 js 报错              |   true |      false |
-| promiseError         |           是否上报 promise 报错           |   true |      false |
-| ajaxError            |            是否上报 ajax 报错             |   true |      false |
-| resourceError        |          是否上报 资源引入 报错           |   true |      false |
-| vueError             | 是否上报 vueError 报错，需要引入 vue 实例 |   true |      false |
-| vue                  |           使用 vueError 时使用            |   true |      false |
-| method |       上报方式：支持 IMG/POST 上报        | 'POST' | 'img/POST' |
+| 参数名        |                   功能                    | 默认值 |   是否必填 |
+|---------------|:-----------------------------------------:|-------:|-----------:|
+| reportUrl     |              发送上报的地址               |        |       true |
+| jsError       |             是否上报 js 报错              |   true |      false |
+| promiseError  |           是否上报 promise 报错           |   true |      false |
+| ajaxError     |            是否上报 ajax 报错             |   true |      false |
+| resourceError |          是否上报 资源引入 报错           |   true |      false |
+| vueError      | 是否上报 vueError 报错，需要引入 vue 实例 |   true |      false |
+| vue           |           使用 vueError 时使用            |   true |      false |
+| method        |       上报方式：支持 IMG/POST 上报        | 'POST' | 'img/POST' |
 
 ---
 
@@ -95,6 +102,7 @@ init 函数参数:
 ## :bug:缺陷
 
 1. 目前没有对性能方面做上报及检测
+2. 不兼容ie9以下浏览器
 3. 目前代码书写及流程仍需优化,Typescript用得太少，代码并不优雅
 
 ## :construction:source-map
@@ -127,3 +135,31 @@ router.get('/error/', async function(req, res) {
 });
 module.exports = router;
 ```
+
+# <span id="jump2">性能监控</span>
+> 页面onload之后将会在控制台输出相关性能信息。
+## :bookmark:使用
+
+```
+import { PerformanceMonitor } from "../dist/index";
+new PerformanceMonitor().init({
+  url: xxx,
+  method: "POST",
+  resource: true,
+  timeout: 1000
+});
+```
+---
+
+init参数：
+| 参数名   |                          功能                           | 默认值 |   是否必填 |
+|----------|:-------------------------------------------------------:|-------:|-----------:|
+| url      |           发送上报的地址，不填写默认为不上报            |        |      false |
+| resource |           是否获取/上报携带页面资源超时等信息           |  false |      false |
+| timeout  | 超过多少毫秒算是超时信息，resource为false时没有传的必要 |    500 |      false |
+| method   |              上报方式：支持 GET/POST 上报               | 'POST' | 'GET/POST' |
+
+---
+
+## :bug:缺陷
+1. 暂时没有做大屏图标展示性能报表。

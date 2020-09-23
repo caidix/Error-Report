@@ -57,9 +57,8 @@ export interface navigatorFuncProps {
  * TODO： 页面性能type
  */
 export type performanceTypes = {
-  report?: boolean;
-  reportUrl?: string;
-  resource?: boolean;
-  method?: string;
-  timeout?: number;
+  url?: string; // 页面性能上报地址不填写为不上报
+  method?: string; //请求方法
+  resource?: boolean; // 携带页面资源超时等信息
+  timeout?: number; // 超时时间毫秒 不设置resource这个参数没必要
 };
