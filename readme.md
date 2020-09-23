@@ -8,8 +8,8 @@
 
 --- 
 
-# <span id="jump">异常监控</span>
-## :bookmark:使用
+# :pushpin:<span id="jump">异常监控</span>
+## :orange_book:使用
 
 ```
 import { ErrorMonitor } from "../dist/index";
@@ -22,7 +22,7 @@ new ErrorMonitor().init({
 
 ---
 
-init 函数参数:
+## :heavy_plus_sign:init 函数参数:
 | 参数名        |                   功能                    | 默认值 |   是否必填 |
 |---------------|:-----------------------------------------:|-------:|-----------:|
 | reportUrl     |              发送上报的地址               |        |       true |
@@ -136,9 +136,9 @@ router.get('/error/', async function(req, res) {
 module.exports = router;
 ```
 
-# <span id="jump2">性能监控</span>
+# :pushpin:<span id="jump2">性能监控</span>
 > 页面onload之后将会在控制台输出相关性能信息。
-## :bookmark:使用
+## :orange_book:使用
 
 ```
 import { PerformanceMonitor } from "../dist/index";
@@ -151,7 +151,7 @@ new PerformanceMonitor().init({
 ```
 ---
 
-init参数：
+## :heavy_plus_sign:init参数：
 | 参数名   |                          功能                           | 默认值 |   是否必填 |
 |----------|:-------------------------------------------------------:|-------:|-----------:|
 | url      |           发送上报的地址，不填写默认为不上报            |        |      false |
@@ -161,5 +161,16 @@ init参数：
 
 ---
 
+## :wrench:携带发送参数
+```js
+{
+  timing, // 白屏时间|重定向时间|DOM加载完成时间等多个信息参数
+  resource, // 获取/上报携带页面资源超时等信息，init为true时才携带
+  other = {
+    url: // 当前页面地址
+    title:  // 当前页面标题
+  }
+}
+```
 ## :bug:缺陷
 1. 暂时没有做大屏图标展示性能报表。
